@@ -36,7 +36,10 @@ a, a:visited, a:link { color:#c80058; text-decoration: none; }
     display: none;
 }
 
-.arr { transform: translate(3px, -22px) rotate(90deg); } /* back button arrow */
+.arr { /* back button arrow */
+    transform: translate(3px, -22px) rotate(90deg);
+    -webkit-transform: translate(3px, -22px) rotate(90deg);
+}
 button { cursor: pointer; }
 button:focus { outline-style: none; }
 button:active { border-style: solid; border-color: #c80058; }
