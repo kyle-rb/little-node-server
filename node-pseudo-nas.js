@@ -12,7 +12,9 @@ let fsMap = {};
 
 const http = require('http');
 const fs = require('fs');
-const ROOT_PATH = '/Volumes'; // root for the stuff to be show to the user
+//const ROOT_PATH = '/Volumes';
+//const ROOT_PATH = '/Users/kyle/Downloads'; // root for the stuff to be show to the user
+const ROOT_PATH = process.cwd();
 const IGNORE_LIST = [
     'Macintosh HD',
     'Icon\r',
@@ -93,7 +95,7 @@ const server = http.createServer(function(request, response) {
         </body></html>`);
     }
     else if (typeof currentDir === "string") { // this is a file, return it or a stream of it
-        let fileExtension = currentDir.split('.').reverse()[0];
+        let fileExtension = currentDir.split('.').pop();
         let mimeType = MIME_TYPES[fileExtension];
         if (mimeType === undefined) {
             mimeType = 'application/octet-stream'; // unknown binary file; browser will save to disk
@@ -102,20 +104,27 @@ const server = http.createServer(function(request, response) {
         let fullFilePath = ROOT_PATH + url;
         fs.lstat(fullFilePath, function(err, stats) {
             if (err) { response.end(err); }
-            let range = request.headers.range;
-            if (!range) { range = 'bytes=0-'; } // if no range header, assume open ended
-            let positions = range.split('=')[1].split('-');
+            
             let total = stats.size;
-            let start = parseInt(positions[0], 10); // get start from range
-            let end = parseInt(positions[1], 10) || total - 1; // get end from range or send all
-            let chunkSize = (end - start) + 1;
+            let start = 0, end = total - 1;
 
-            response.writeHead(206, { // 206 is partial content response
-                'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
-                'Accept-Ranges': 'bytes',
-                'Content-Length': chunkSize,
-                'Content-Type': mimeType
-            });
+            let range = request.headers.range;
+            if (range) {
+                let positions = range.split('=')[1].split('-');
+                start = parseInt(positions[0], 10); // get start from range
+                end = parseInt(positions[1], 10) || total - 1; // get end from range or send all
+                let chunkSize = (end - start) + 1;
+
+                response.writeHead(206, { // 206 is partial content response
+                    'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
+                    'Accept-Ranges': 'bytes',
+                    'Content-Length': chunkSize,
+                    'Content-Type': mimeType
+                });
+            }
+            else { // if no range header, just regular 200 response
+                response.writeHead(200, { 'Content-Type': mimeType });
+            }
 
             let fileStream = fs.createReadStream(fullFilePath, { start: start, end: end })
                 .on('open', function() {
