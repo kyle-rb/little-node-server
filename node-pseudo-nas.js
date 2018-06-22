@@ -103,17 +103,35 @@ const server = http.createServer(function(request, response) {
         
         let fullFilePath = ROOT_PATH + url;
         fs.lstat(fullFilePath, function(err, stats) {
-            if (err) { response.end(err); }
+            if (err) {
+                response.end(err);
+                return; // end early if error with path
+            }
             
             let total = stats.size;
             let start = 0, end = total - 1;
+            let chunkSize = (end - start) + 1;
 
             let range = request.headers.range;
             if (range) {
                 let positions = range.split('=')[1].split('-');
                 start = parseInt(positions[0], 10); // get start from range
                 end = parseInt(positions[1], 10) || total - 1; // get end from range or send all
-                let chunkSize = (end - start) + 1;
+                chunkSize = (end - start) + 1;
+
+                console.log('\nrange: ' + range);
+                console.log('start: ' + start, 'end: ' + end, 'total: ' + total);
+
+                if (start == total) {
+                    response.writeHead(206);
+                    response.end(); // return empty response because VLC requests this byterange
+                    return;
+                }
+                else if (start > total) {
+                    response.writeHead(416); // error: requested range not satisfiable
+                    response.end();
+                    return;
+                }
 
                 response.writeHead(206, { // 206 is partial content response
                     'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
@@ -123,7 +141,13 @@ const server = http.createServer(function(request, response) {
                 });
             }
             else { // if no range header, just regular 200 response
-                response.writeHead(200, { 'Content-Type': mimeType });
+                console.log('regular 200 request for file');
+                response.writeHead(200, {
+                    'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
+                    'Accept-Ranges': 'bytes',
+                    'Content-Length': chunkSize,
+                    'Content-Type': mimeType
+                });
             }
 
             let fileStream = fs.createReadStream(fullFilePath, { start: start, end: end })
