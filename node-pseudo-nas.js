@@ -119,8 +119,8 @@ const server = http.createServer(function(request, response) {
                 end = parseInt(positions[1], 10) || total - 1; // get end from range or send all
                 chunkSize = (end - start) + 1;
 
-                console.log('\nrange: ' + range);
-                console.log('start: ' + start, 'end: ' + end, 'total: ' + total);
+                //console.log('\nrange: ' + range);
+                //console.log('start: ' + start, 'end: ' + end, 'total: ' + total);
 
                 if (start == total) {
                     response.writeHead(206);
@@ -141,7 +141,7 @@ const server = http.createServer(function(request, response) {
                 });
             }
             else { // if no range header, just regular 200 response
-                console.log('regular 200 request for file');
+                //console.log('regular 200 request for file');
                 response.writeHead(200, {
                     'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
                     'Accept-Ranges': 'bytes',
