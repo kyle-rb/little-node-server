@@ -2,6 +2,8 @@
  * node pseudo nas
  * this shows your files in a neat html format
  * mostly for streaming movies and stuff
+ * it's actually more like a static file server I guess
+ * but I use it for streaming movies over the local network, so shut up
  * 
  * created by Kyle Boyle - March 2017
  */
@@ -30,7 +32,8 @@ const MIME_TYPES = {
     'ico': 'image/x-icon', 'svg':'image/svg+xml', 'webp': 'image/webp',
     'mp3': 'audio/mpeg',   'wav':'audio/wav',
     'txt': 'text/plain',   'html':'text/html',    'css': 'text/css',    'js': 'text/javascript',
-    'xml': 'text/xml' // possibly supposed to be application/xml, but it's debatable
+    'xml': 'text/xml', // possibly supposed to be application/xml, but it's debatable
+    'pdf': 'application/pdf', 'json': 'application/json',
 }; // all the filetypes that might need to be served, that I can think of right now (subtitles?)
 const MIN_STYLES = 
     ".content,.result{position:relative}body,button:hover:after{font-family:futura,arial}body{margin:0;font-size:16pt;color:#c80058;background-color:#1c1c1c}a,a:link,a:visited{color:#c80058;text-decoration:none}::selection{color:#6000f0}.scale{width:96%;margin-left:auto;margin-right:auto;margin-bottom:32px}.content{padding:16px;border-radius:8px;box-shadow:3px 3px 6px #60686c inset;background-color:#e0e8ec}.result{left:6px;padding:6px 6px 6px 10px;margin:4px;border-radius:4px;background-color:#f0f8fc;animation:1.2s linear 0s bounce-in;overflow:scroll}.result::-webkit-scrollbar{display:none}.arr{transform:translate(3px,-22px) rotate(90deg);-webkit-transform: translate(3px, -22px) rotate(90deg)}button{cursor:pointer}button:focus{outline-style:none}button:active{border-style:solid;border-color:#c80058}button:hover:after{position:absolute;top:-8px;padding:0 4px 2px;border-radius:2px;font-size:14pt;color:#c80059;background-color:#f0f8fc;opacity:.9;white-space:nowrap;z-index:1}button.back,button.video{border-width:3px;border-color:#c01050;background-color:#c80058}button.back{margin:8px;height:40px;width:60px;border-radius:6px;font-size:56px;font-weight:700;color:#fff}button.back:hover:after{content:'go up a directory'}button.video{position:relative;height:30px;width:30px;margin:6px;border-radius:4px;color:#e0e8ec}@media screen and (max-device-width:4in){.scale{width:96%}.content{text-align:center}button.back{position:static}}@media screen and (min-device-width:4in) and (max-width:640px){.content{text-align:center}}@media screen and (min-device-width:4in) and (min-width:752px){.scale{width:720px}}@media screen and (min-device-width:4in) and (min-width:1024px){.scale{width:976px}}@media screen and (min-device-width:4in) and (min-width:1280px){.scale{width:1232px}}@media screen and (max-width:800px){button.back{position:static}}@keyframes bounce-in{0%{left:720px}28%{left:-18px}40%{left:30px}56%{left:-3px}76%{left:15px}100%{left:6px}}";
