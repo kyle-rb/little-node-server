@@ -80,9 +80,10 @@ const server = http.createServer(function(request, response) {
 
         response.end(`<html><head><title>${url||'/'}</title>
         <link rel="shortcut icon" href="${FAVICON}" type="image/png">
+        <meta charset="utf-8">
         <meta name=viewport content="width=device-width, initial-scale=1">
         <style>${MIN_STYLES}</style></head><body>
-        <a href="${parentPath}"><button class="back"><div class="arr">&#8623;</div></button></a>
+        <a href="${parentPath}"><button class="back"><div class="arr">&larr;</div></button></a>
         <div class="scale"><div class="content">${url||'/'}</div></div>
         <div class="scale"><div class="content">${dirText}</div></div>
         </body></html>`);

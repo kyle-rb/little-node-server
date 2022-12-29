@@ -1,5 +1,5 @@
 body {
-    margin: 0px;
+    margin: 0;
     font-family: "futura", "arial";
     font-size: 16pt;
     color: #c80058;
@@ -36,8 +36,9 @@ a, a:visited, a:link { color:#c80058; text-decoration: none; }
 }
 
 .arr { /* back button arrow */
-    transform: translate(3px, -22px) rotate(90deg);
-    -webkit-transform: translate(3px, -22px) rotate(90deg);
+    position: absolute;
+    top: -18px;
+    left: 0;
 }
 button { cursor: pointer; }
 button:focus { outline-style: none; }
@@ -45,7 +46,7 @@ button:active { border-style: solid; border-color: #c80058; }
 button:hover:after { /* hover text */
     position: absolute;
     top: -8px;
-    padding: 0px 4px 2px 4px;
+    padding: 0 4px 2px 4px;
     border-radius: 2px;
     font-family: "futura", "arial";
     font-size: 14pt;
@@ -56,6 +57,7 @@ button:hover:after { /* hover text */
     z-index: 1;
 }
 button.back {
+    position: relative;
     margin: 8px;
     height: 40px;
     width: 60px;
