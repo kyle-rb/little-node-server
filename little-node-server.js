@@ -32,7 +32,7 @@ const MIME_TYPES = {
     'pdf': 'application/pdf', 'json': 'application/json',
 }; // all the filetypes that might need to be served, that I can think of right now (subtitles?)
 
-const MIN_STYLES = fs.readFileSync('shiny.css');
+const STYLES = fs.readFileSync('shiny.css');
 const FAVICON = 'data:image/png;base64,' + fs.readFileSync('file-icon.png').toString('base64');
 
 const server = http.createServer(function(request, response) {
@@ -50,13 +50,13 @@ const server = http.createServer(function(request, response) {
             break;
         }
     }
-    
+
     if (currentDir === undefined) { // error processing path; 404 file not found
         response.statusCode = 404;
         response.setHeader('Content-Type', 'text/html');
         response.end(`<html><head><title>uh oh</title>
         <link rel="shortcut icon" href="${FAVICON}" type="image/png">
-        <style>${MIN_STYLES}</style></head><body>
+        <style>${STYLES}</style></head><body>
         <h1>you made a request for ${url}</h1>
         <h2>invalid directory</h2>
         </body></html>`);
@@ -82,7 +82,7 @@ const server = http.createServer(function(request, response) {
         <link rel="shortcut icon" href="${FAVICON}" type="image/png">
         <meta charset="utf-8">
         <meta name=viewport content="width=device-width, initial-scale=1">
-        <style>${MIN_STYLES}</style></head><body>
+        <style>${STYLES}</style></head><body>
         <a href="${parentPath}"><button class="back"><div class="arr">&larr;</div></button></a>
         <div class="scale"><div class="content">${url||'/'}</div></div>
         <div class="scale"><div class="content">${dirText}</div></div>
