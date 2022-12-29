@@ -29,7 +29,6 @@ a, a:visited, a:link { color:#c80058; text-decoration: none; }
     margin: 4px;
     border-radius: 4px;
     background-color: #f0f8fc;
-    animation: 1.2s linear 0s bounce-in;
     overflow: scroll;
 }
 .result::-webkit-scrollbar { 
