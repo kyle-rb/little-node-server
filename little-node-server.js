@@ -32,8 +32,9 @@ const MIME_TYPES = {
     'pdf': 'application/pdf', 'json': 'application/json',
 }; // all the filetypes that might need to be served, that I can think of right now (subtitles?)
 
-const STYLES = fs.readFileSync('shiny.css');
-const FAVICON = 'data:image/png;base64,' + fs.readFileSync('file-icon.png').toString('base64');
+const STYLES = fs.readFileSync(__dirname + '/shiny.css');
+const FAVICON = 'data:image/png;base64,'
+    + fs.readFileSync(__dirname + '/file-icon.png').toString('base64');
 
 const server = http.createServer(function(request, response) {
     let url = decodeURI(request.url);
